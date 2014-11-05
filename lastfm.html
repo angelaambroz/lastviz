@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+		<head>
+				<meta charset="utf-8">
+				<title>Last.fm: Testing the JSON</title>
+				<!--<<script src="d3/d3.v3.js" charset="utf-8"></script>-->
+				<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+
+		</head>
+<style>
+</style>
+
+<body>
+
+
+			<form>
+			Username: <input type="text" name="userName" id="userName"><br>
+			<!--State: <input type="text" name="userName" id="state">--><br>
+			<input name="updateButton" 
+           type="button" 
+           value="Update" />
+			</form>
+
+
+<script>
+
+"use strict";
+
+var w = 300,
+	h = 300,
+	outerRadius = w / 2,
+	innerRadius = w / 3, 
+	arc = d3.svg.arc()
+			.innerRadius(innerRadius)
+			.outerRadius(outerRadius),
+	pie = d3.layout.pie(),
+	color = d3.scale.category10();
+
+
+var svg = d3.select("body")
+	.append("svg")
+	.attr("width", w)
+	.attr("height", h);
+
+
+
+
+d3.select('input[type=button]').on('click', function() {
+  
+  var userText = document.getElementById('userName').value,
+      dataset;
+
+      console.log(userText);
+
+  var url = 'http://ws.audioscrobbler.com/2.0/?method=user.getlovedtracks&user=' + userText + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json';
+
+  var tags = 'http://ws.audioscrobbler.com/2.0/?method=user.gettoptags&user='+ userText + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json';
+
+  var tracks = 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=' + userText + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json&extended=1;'
+
+  var top = 'http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=' + userText + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json&period=12month&limit=500';
+
+  console.log(url);
+
+  console.log(tags);
+
+  d3.select("body")
+    .append("p")
+    .text("Test!");
+
+  d3.json(top, function(error, json) {
+
+	    if(error) { return console.log(error); } 
+	  	console.log(json);
+		dataset = json; 
+	  
+
+	  d3.select("body")
+	  	.append("p");
+
+	  d3.selectAll("p")
+	  	.data(dataset.topartists.artist)
+	  	.enter()
+		.append("p")
+		.text(function(d, i) {
+			console.log(d.name);
+			var rank = i+1;
+			return "The number " + rank + " artist is " + d.name + ".";
+	 	}); 
+
+
+  }); //json call
+
+
+}); //on click function
+
+
+
+
+
+
+/*
+
+	//canvas
+	var svg = d3.select("body")
+		.append("svg")
+		.attr("width", w + margin.left + margin.right)
+		.attr("height", h + margin.top + margin.bottom)
+		.append("g")
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	svg.selectAll("rect")
+		.data(data)
+		.enter()
+		.append("rect")
+		.attr("x", function(i) {
+			return i+15;
+		})
+		.attr("y", function(region) {
+			return y(region.values[0].swahili);
+		})
+		.attr("width", barWidth)
+		.attr("height", function(region) { return h-y(region.values[0].swahili); })
+		.attr("class", function(region) { return region.key; });
+*/
+
+
+</script>
+</body>
+</html>
