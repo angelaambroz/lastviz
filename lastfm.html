@@ -36,7 +36,7 @@ var w = 300,
 			.innerRadius(innerRadius)
 			.outerRadius(outerRadius),
 	pie = d3.layout.pie(),
-	color = d3.scale.category10();
+	color = d3.scale.category20b();
 
 
 var svg = d3.select("body")
@@ -54,17 +54,8 @@ d3.select('input[type=button]').on('click', function() {
 
       console.log(userText);
 
-  var url = 'http://ws.audioscrobbler.com/2.0/?method=user.getlovedtracks&user=' + userText + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json';
+  var top = 'http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=' + userText + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json&period=12month&limit=20';
 
-  var tags = 'http://ws.audioscrobbler.com/2.0/?method=user.gettoptags&user='+ userText + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json';
-
-  var tracks = 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=' + userText + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json&extended=1;'
-
-  var top = 'http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=' + userText + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json&period=12month&limit=500';
-
-  console.log(url);
-
-  console.log(tags);
 
   d3.select("body")
     .append("p")
@@ -75,56 +66,28 @@ d3.select('input[type=button]').on('click', function() {
 	    if(error) { return console.log(error); } 
 	  	console.log(json);
 		dataset = json; 
-	  
 
-	  d3.select("body")
-	  	.append("p");
+	 	//Set up groups
+		var arcs = svg.selectAll("g.arc")
+				.data(pie(dataset.topartists.artist))
+				.enter()
+				.append("g")
+				.attr("class", "arc")
+				.attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");
 
-	  d3.selectAll("p")
-	  	.data(dataset.topartists.artist)
-	  	.enter()
-		.append("p")
-		.text(function(d, i) {
-			console.log(d.name);
-			var rank = i+1;
-			return "The number " + rank + " artist is " + d.name + ".";
-	 	}); 
+					//Draw arc paths
+			arcs.append("path")
+			    .attr("fill", function(d, i) {
+			    	return color(i);
+			    })
+			    .attr("d", arc);
+
 
 
   }); //json call
 
 
 }); //on click function
-
-
-
-
-
-
-/*
-
-	//canvas
-	var svg = d3.select("body")
-		.append("svg")
-		.attr("width", w + margin.left + margin.right)
-		.attr("height", h + margin.top + margin.bottom)
-		.append("g")
-		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-	svg.selectAll("rect")
-		.data(data)
-		.enter()
-		.append("rect")
-		.attr("x", function(i) {
-			return i+15;
-		})
-		.attr("y", function(region) {
-			return y(region.values[0].swahili);
-		})
-		.attr("width", barWidth)
-		.attr("height", function(region) { return h-y(region.values[0].swahili); })
-		.attr("class", function(region) { return region.key; });
-*/
 
 
 </script>
