@@ -6,7 +6,7 @@ lastviz
 * Make it user-interactive, because hooray!
 * Learn a new `d3.js` visualization. 
 
-## To Do
+### To Do
 1. Style the ugly buttons.
 2. Clean up general file, which is a mess.
 3. Figure out if there's a reason and way to hide (?) the API key. Or does no one care?
@@ -16,4 +16,6 @@ lastviz
 
 ### Resources
 
-[Example: Mike Bostock - Sunburst!](http://bl.ocks.org/mbostock/4063423)
+API info: [last.fm - user.getTopArtists](http://www.last.fm/api/show/user.getTopArtists)
+Example: [Mike Bostock - Sunburst](http://bl.ocks.org/mbostock/4063423)
+
