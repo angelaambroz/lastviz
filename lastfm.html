@@ -46,30 +46,25 @@ var svg = d3.select("body")
 
 
 
-
 d3.select('input[type=button]').on('click', function() {
   
   var userText = document.getElementById('userName').value,
       dataset;
 
-      console.log(userText);
-
   var top = 'http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=' + userText + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json&period=12month&limit=20';
 
-
-  d3.select("body")
-    .append("p")
-    .text("Test!");
 
   d3.json(top, function(error, json) {
 
 	    if(error) { return console.log(error); } 
-	  	console.log(json);
-		dataset = json; 
+
+		dataset = json.topartists.artist; 
+
+		console.log(dataset);
 
 	 	//Set up groups
 		var arcs = svg.selectAll("g.arc")
-				.data(pie(dataset.topartists.artist))
+				.data(pie(dataset))
 				.enter()
 				.append("g")
 				.attr("class", "arc")
