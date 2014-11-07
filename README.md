@@ -20,7 +20,7 @@ lastviz
 
 ### Resources
 
-API info: [last.fm - user.getTopArtists](http://www.last.fm/api/show/user.getTopArtists)
-Example: [Mike Bostock - Sunburst](http://bl.ocks.org/mbostock/4063423)
-Example: [StackOverflow - 1](https://stackoverflow.com/questions/19717519/update-d3-pie-chart-with-new-data-json)
+* API info: [last.fm - user.getTopArtists](http://www.last.fm/api/show/user.getTopArtists)
+* Example: [Mike Bostock - Sunburst](http://bl.ocks.org/mbostock/4063423)
+* Example: [StackOverflow - 1](https://stackoverflow.com/questions/19717519/update-d3-pie-chart-with-new-data-json)
 
