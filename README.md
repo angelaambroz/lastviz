@@ -11,10 +11,11 @@ lastviz
 2. ~~Clean up general file, which is a mess.~~ (Clean enough for now.)
 3. Figure out if there's a reason and way to hide (?) the API key. Or does no one care?
 4. ~~Can I pull two JSONs at once? Nested `d3.json` pulls?~~ (Yes.)
-5. Merging artist tags with track/artists (ringed donut).
+5. ~~Merging artist tags with track/artists (ringed donut).~~ (Ballaaaa.)
 6. Second level (outer ring) tooltip on artists: pics.
 7. Transitions between users.
 8. `Enter` keystroke = clicking on `Update`. 
+9. `click` to bring out the second ring (of topArtists).
 
 
 ### Resources
