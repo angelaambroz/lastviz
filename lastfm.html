@@ -66,30 +66,27 @@ d3.select('input[type=button]').on('click', function() {
 		//Merge (attempted)
 		topArtists.forEach(function(d) {
 			//loop through each of the top 10 artists selected
-			//pull their mbid (musicbeatz id) and plug it into the var for tags			
-
+			//pull their mbid (musicbrainz id) and plug it into the var for tags			
 			tags = 'http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&mbid='+ d.mbid + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json';
 
-			//pull that JSON
-			d3.json(tags, function(error, tag) {
+				//pull that JSON
+				d3.json(tags, function(error, tag) {
 
-				if (error) { return console.log(error); };
-				
-				//capture only the most commonly used tag (artistTag)
-				artistTag = tag.toptags.tag[0];
+					if (error) { return console.log(error); };
+					
+					//capture only the most commonly used tag (artistTag)
+					artistTag = tag.toptags.tag[0].name;
 
-				//console.log(artistTag);
+					//push that string value to the original JSON
+					d["tag"] = artistTag;
 
-				d[tag] = artistTag;
+					
+				}); //tags JSON call 
 
-				console.log(d)
+			}); //close topArtists loop	
 
-
-			}); //tags JSON call 
-
-			
-			//push that string value to the original JSON
-			});	
+			//This worked! Asyncronicity is defeated
+			console.log(topArtists);
 
 
 	 		//The visualization: Sunburst
@@ -110,7 +107,7 @@ d3.select('input[type=button]').on('click', function() {
 
 
 
-  }); //top json call
+  }); //topArtists json call
 }); //on click function
 
 
