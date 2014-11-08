@@ -49,7 +49,8 @@ var svg = d3.select("body")
 d3.select('input[type=button]').on('click', function() {
   
   var userText = document.getElementById('userName').value,
-      topArtists, artistTag;
+      topArtists, 
+      artistTag;
 
   var top = 'http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=' + userText + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json&period=12month&limit=10';
 
@@ -75,18 +76,26 @@ d3.select('input[type=button]').on('click', function() {
 					if (error) { return console.log(error); };
 					
 					//capture only the most commonly used tag (artistTag)
-					artistTag = tag.toptags.tag[0].name;
+					//and also clean it up a bit
+					artistTag = tag.toptags.tag[0].name.toLowerCase().split('-').join(' ');
 
 					//push that string value to the original JSON
 					d["tag"] = artistTag;
 
 					
-				}); //tags JSON call 
-
+				}); // close tags JSON call 
 			}); //close topArtists loop	
 
-			//This worked! Asyncronicity is defeated
 			console.log(topArtists);
+
+
+			var dataset = d3.nest()
+							.key(function(d) { 
+								return d.tag; 
+							})
+							.entries(topArtists);
+
+			console.log(dataset);
 
 
 	 		//The visualization: Sunburst
