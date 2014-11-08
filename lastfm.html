@@ -64,6 +64,7 @@ d3.select('input[type=button]').on('click', function() {
 
 		topArtists = json.topartists.artist; 
 
+
 		//Merge (attempted)
 		topArtists.forEach(function(d) {
 			//loop through each of the top 10 artists selected
@@ -86,16 +87,15 @@ d3.select('input[type=button]').on('click', function() {
 				}); // close tags JSON call 
 			}); //close topArtists loop	
 
-			console.log(topArtists);
+
+			console.log(topArtists[0]);
 
 
 			var dataset = d3.nest()
-							.key(function(d) { 
-								return d.tag; 
+							.key(function(d) {
+								return topArtists.tag; 
 							})
 							.entries(topArtists);
-
-			console.log(dataset);
 
 
 	 		//The visualization: Sunburst

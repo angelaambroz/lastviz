@@ -12,7 +12,7 @@ lastviz
 3. Figure out if there's a reason and way to hide (?) the API key. Or does no one care?
 4. ~~Can I pull two JSONs at once? Nested `d3.json` pulls?~~ (Yes.)
 5. ~~Merging artist tags with track/artists (ringed donut).~~ (Ballaaaa.)
-6. Second level (outer ring) tooltip on artists: pics.
+6. Second level (outer ring) tooltip on artists: medium pics.
 7. Transitions between users.
 8. `Enter` keystroke = clicking on `Update`. 
 9. `click` to bring out the second ring (of topArtists).
@@ -20,6 +20,7 @@ lastviz
 11. Colors?! COLORS!
 12. ~~lowerCase tags, remove hyphens and replace with spaces, etc.~~
 13. Rollup data (`d3.nest`), with `tag` being the `key`. 
+14. Use [queue.js](http://bl.ocks.org/mbostock/1696080) to deal with asyncronous JSON calls. :(
 
 
 ### Resources
