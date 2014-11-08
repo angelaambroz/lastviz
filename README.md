@@ -27,5 +27,6 @@ lastviz
 
 * API info: [last.fm - user.getTopArtists](http://www.last.fm/api/show/user.getTopArtists)
 * Example: [Mike Bostock - Sunburst](http://bl.ocks.org/mbostock/4063423)
-* Example: [StackOverflow - 1](https://stackoverflow.com/questions/19717519/update-d3-pie-chart-with-new-data-json)
+* Example: [StackOverflow - Update pie chart with new data.json](https://stackoverflow.com/questions/19717519/update-d3-pie-chart-with-new-data-json)
+* Info: [StackOverflow - Dynamic defers in queue.js](https://stackoverflow.com/questions/21687230/dynamically-change-the-number-of-defer-calls-in-queue-js)
 

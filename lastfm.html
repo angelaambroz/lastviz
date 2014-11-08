@@ -6,6 +6,7 @@
 				<title>Last.fm: Testing the JSON</title>
 				<!--<<script src="d3/d3.v3.js" charset="utf-8"></script>-->
 				<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+				<script src="http://d3js.org/queue.v1.min.js"></script>
 
 
 		</head>
@@ -50,7 +51,9 @@ d3.select('input[type=button]').on('click', function() {
   
   var userText = document.getElementById('userName').value,
       topArtists, 
-      artistTag;
+      artistTag,
+      dataset,
+      fullData;
 
   var top = 'http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=' + userText + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json&period=12month&limit=10';
 
@@ -64,7 +67,7 @@ d3.select('input[type=button]').on('click', function() {
 
 		topArtists = json.topartists.artist; 
 
-
+		/*
 		//Merge (attempted)
 		topArtists.forEach(function(d) {
 			//loop through each of the top 10 artists selected
@@ -87,15 +90,57 @@ d3.select('input[type=button]').on('click', function() {
 				}); // close tags JSON call 
 			}); //close topArtists loop	
 
+			*/
 
-			console.log(topArtists[0]);
+		//Merge (second attempt)
+
+		var q = queue()
+			.defer(d3.json, top);
+		
+		topArtists.forEach(function(d) { 
+
+			tags = 'http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&mbid='+ d.mbid + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json'
+
+			q.defer(d3.json, tags);
+		
+		});
 
 
-			var dataset = d3.nest()
-							.key(function(d) {
-								return topArtists.tag; 
-							})
-							.entries(topArtists);
+		q.awaitAll(function() {
+
+
+				dataset = arguments[1][0].topartists.artist;
+				
+			for (var i = 1; i < arguments[1].length ; i++) {
+
+				var j = i - 1;
+
+				var artistName = arguments[1][0].topartists.artist[j].name;
+				var artistTagName = arguments[1][i].toptags['@attr'].artist;
+
+				if ( artistName == artistTagName ) {
+
+					artistTag = arguments[1][i].toptags.tag[0].name.toLowerCase().split('-').join(' ');
+
+					dataset[j]["tag"] = artistTag;
+
+				};
+			};
+
+
+			console.log(dataset);
+
+			fullData = d3.nest()
+				.key(function(d) {
+					return dataset.tag; 
+				})
+				.entries(dataset);
+
+			console.log(fullData);
+
+			
+			}); //queue.await closer - I think I can put everything in here...
+
 
 
 	 		//The visualization: Sunburst
@@ -117,6 +162,8 @@ d3.select('input[type=button]').on('click', function() {
 
 
   }); //topArtists json call
+
+
 }); //on click function
 
 
