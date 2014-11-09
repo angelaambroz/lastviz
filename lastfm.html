@@ -96,52 +96,53 @@ d3.select('input[type=button]').on('click', function() {
 
 		var q = queue()
 			.defer(d3.json, top);
-		
+
+		//topArtists = arguments[1][0].topartists.artist;
+
 		topArtists.forEach(function(d) { 
 
-			tags = 'http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&mbid='+ d.mbid + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json'
+				tags = 'http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&mbid='+ d.mbid + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json'
 
-			q.defer(d3.json, tags);
-		
-		});
+				q.defer(d3.json, tags);
+			
+				});
+
+		q.awaitAll(function() {			
 
 
-		q.awaitAll(function() {
-
-
-				dataset = arguments[1][0].topartists.artist;
+				dataset = arguments[1][0].topartists.artist
 				
-			for (var i = 1; i < arguments[1].length ; i++) {
+				for (var i = 1; i < arguments[1].length ; i++) {
 
-				var j = i - 1;
+					var j = i - 1;
 
-				var artistName = arguments[1][0].topartists.artist[j].name;
-				var artistTagName = arguments[1][i].toptags['@attr'].artist;
+					var artistName = arguments[1][0].topartists.artist[j].name;
+					var artistTagName = arguments[1][i].toptags['@attr'].artist;
 
-				if ( artistName == artistTagName ) {
+					if ( artistName == artistTagName ) {
 
-					artistTag = arguments[1][i].toptags.tag[0].name.toLowerCase().split('-').join(' ');
+						artistTag = arguments[1][i].toptags.tag[0].name.toLowerCase().split('-').join(' ');
 
-					dataset[j]["tag"] = artistTag;
+						dataset[j]["tag"] = artistTag;
 
-				};
-			};
+					};
 
+				}; //close for loop
 
-			console.log(dataset);
-
-			fullData = d3.nest()
-				.key(function(d) {
-					return dataset.tag; 
-				})
-				.entries(dataset);
-
-			console.log(fullData);
 
 			
-			}); //queue.await closer - I think I can put everything in here...
+				dataset = d3.nest()
+					.key(function(d) {
+						return d.tag; 
+					})
+					.entries(dataset);
+
+				console.log(dataset);
 
 
+
+
+				/*
 
 	 		//The visualization: Sunburst
 
@@ -159,10 +160,14 @@ d3.select('input[type=button]').on('click', function() {
 				    })
 				    .attr("d", arc);
 
+*/
 
+				
+
+
+			}); //queue.await closer - I think I can put everything in here...
 
   }); //topArtists json call
-
 
 }); //on click function
 

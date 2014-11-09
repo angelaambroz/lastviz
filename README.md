@@ -19,8 +19,8 @@ lastviz
 10. Drop-down form of how many results (10, 20, etc?). Or text box? (Then isNaN results in error message to user.)
 11. Colors?! COLORS!
 12. ~~lowerCase tags, remove hyphens and replace with spaces, etc.~~
-13. Rollup data (`d3.nest`), with `tag` being the `key`. 
-14. Use [queue.js](http://bl.ocks.org/mbostock/1696080) to deal with asyncronous JSON calls. :(
+13. ~~Rollup data (`d3.nest`), with `tag` being the `key`.~~ 
+14. ~~Use [queue.js](http://bl.ocks.org/mbostock/1696080) to deal with asynchronous JSON calls.~~ (Awww yeah.)
 
 
 ### Resources
