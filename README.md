@@ -14,7 +14,7 @@ lastviz
 5. ~~Merging artist tags with track/artists (ringed donut).~~ (Ballaaaa.)
 6. Second level (outer ring) tooltip on artists: medium pics.
 7. Transitions between users.
-8. `Enter` keystroke = clicking on `Update`. 
+8. `Enter` keystroke = clicking on `Update`?
 9. `click` to bring out the second ring (of topArtists).
 10. Drop-down form of how many results (10, 20, etc?). Or text box? (Then `isNaN` results in error message to user.)
 11. Colors?! COLORS!
@@ -29,7 +29,8 @@ lastviz
 
 * API info: [last.fm - user.getTopArtists](http://www.last.fm/api/show/user.getTopArtists)
 * Example: [Mike Bostock - Sunburst](http://bl.ocks.org/mbostock/4063423)
+* Example: [Random JSFiddle - Pie chart](http://jsfiddle.net/ragingsquirrel3/qkHK6/)
 * Q&A: [StackOverflow - Update pie chart with new data.json](https://stackoverflow.com/questions/19717519/update-d3-pie-chart-with-new-data-json)
 * Q&A: [StackOverflow - Dynamic defers in queue.js](https://stackoverflow.com/questions/21687230/dynamically-change-the-number-of-defer-calls-in-queue-js)
-* Tutorial: 
+
 
