@@ -21,12 +21,15 @@ lastviz
 12. ~~lowerCase tags, remove hyphens and replace with spaces, etc.~~
 13. ~~Rollup data (`d3.nest`), with `tag` being the `key`.~~ 
 14. ~~Use [queue.js](http://bl.ocks.org/mbostock/1696080) to deal with asynchronous JSON calls.~~ (Awww yeah.)
+15. How to give the user an `error` message if anything is `undefined`? This becomes especially important when users call lots of `topArtist` data (e.g. >30 artists).
+16. Clean up the `d3.rollup` to count leaves and so on.
 
 
 ### Resources
 
 * API info: [last.fm - user.getTopArtists](http://www.last.fm/api/show/user.getTopArtists)
 * Example: [Mike Bostock - Sunburst](http://bl.ocks.org/mbostock/4063423)
-* Example: [StackOverflow - Update pie chart with new data.json](https://stackoverflow.com/questions/19717519/update-d3-pie-chart-with-new-data-json)
-* Info: [StackOverflow - Dynamic defers in queue.js](https://stackoverflow.com/questions/21687230/dynamically-change-the-number-of-defer-calls-in-queue-js)
+* Q&A: [StackOverflow - Update pie chart with new data.json](https://stackoverflow.com/questions/19717519/update-d3-pie-chart-with-new-data-json)
+* Q&A: [StackOverflow - Dynamic defers in queue.js](https://stackoverflow.com/questions/21687230/dynamically-change-the-number-of-defer-calls-in-queue-js)
+* Tutorial: 
 

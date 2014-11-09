@@ -55,7 +55,7 @@ d3.select('input[type=button]').on('click', function() {
       dataset,
       fullData;
 
-  var top = 'http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=' + userText + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json&period=12month&limit=10';
+  var top = 'http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=' + userText + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json&period=12month&limit=30';
 
   var tags = 'http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&mbid=164f0d73-1234-4e2c-8743-d77bf2191051&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json';
 
@@ -67,37 +67,11 @@ d3.select('input[type=button]').on('click', function() {
 
 		topArtists = json.topartists.artist; 
 
-		/*
-		//Merge (attempted)
-		topArtists.forEach(function(d) {
-			//loop through each of the top 10 artists selected
-			//pull their mbid (musicbrainz id) and plug it into the var for tags			
-			tags = 'http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&mbid='+ d.mbid + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json';
-
-				//pull that JSON
-				d3.json(tags, function(error, tag) {
-
-					if (error) { return console.log(error); };
-					
-					//capture only the most commonly used tag (artistTag)
-					//and also clean it up a bit
-					artistTag = tag.toptags.tag[0].name.toLowerCase().split('-').join(' ');
-
-					//push that string value to the original JSON
-					d["tag"] = artistTag;
-
-					
-				}); // close tags JSON call 
-			}); //close topArtists loop	
-
-			*/
-
-		//Merge (second attempt)
+		
+		//Merge
 
 		var q = queue()
 			.defer(d3.json, top);
-
-		//topArtists = arguments[1][0].topartists.artist;
 
 		topArtists.forEach(function(d) { 
 
@@ -165,7 +139,7 @@ d3.select('input[type=button]').on('click', function() {
 				
 
 
-			}); //queue.await closer - I think I can put everything in here...
+			}); //queue.await closer
 
   }); //topArtists json call
 
