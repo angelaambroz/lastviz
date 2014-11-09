@@ -16,13 +16,13 @@ lastviz
 7. Transitions between users.
 8. `Enter` keystroke = clicking on `Update`. 
 9. `click` to bring out the second ring (of topArtists).
-10. Drop-down form of how many results (10, 20, etc?). Or text box? (Then isNaN results in error message to user.)
+10. Drop-down form of how many results (10, 20, etc?). Or text box? (Then `isNaN` results in error message to user.)
 11. Colors?! COLORS!
 12. ~~lowerCase tags, remove hyphens and replace with spaces, etc.~~
 13. ~~Rollup data (`d3.nest`), with `tag` being the `key`.~~ 
 14. ~~Use [queue.js](http://bl.ocks.org/mbostock/1696080) to deal with asynchronous JSON calls.~~ (Awww yeah.)
 15. How to give the user an `error` message if anything is `undefined`? This becomes especially important when users call lots of `topArtist` data (e.g. >30 artists).
-16. Clean up the `d3.rollup` to count leaves and so on.
+16. ~~Clean up the `d3.rollup` to count leaves and so on.~~ (Don't need this. It's similar to `collapse` in Stata.)
 
 
 ### Resources
