@@ -18,13 +18,14 @@ lastviz
 9. `click` to bring out the second ring (of topArtists).
 10. ~~Drop-down form of how many results (10, 20, etc?). Or text box?~~ 
 11. Colors?! COLORS!
-12. ~~lowerCase tags, remove hyphens and replace with spaces, etc.~~
+12. ~~`lowerCase` `tags`, remove hyphens and replace with spaces, etc.~~
 13. ~~Rollup data (`d3.nest`), with `tag` being the `key`.~~ 
 14. ~~Use [queue.js](http://bl.ocks.org/mbostock/1696080) to deal with asynchronous JSON calls.~~ (Awww yeah.)
 15. ~~How to give the user an `error` message if anything is `undefined`? This becomes especially important when users call lots of `topArtist` data (e.g. >30 artists). Or when users enter text into the number box.~~ (Figured out a way to skip this and just give "none" `tags`.)
 16. ~~Clean up the `d3.rollup` to count leaves and so on.~~ (Don't need this. It's similar to `collapse` in Stata.)
-17. Style the `<h4>` a bit more...
+17. ~~Style the `<h4>` a bit more...~~
 18. Change mouse icon when hovering over `Update` button.
+19. The actual sunburst/`pie` layout! Specifically, how to get `d.playcount` in my `pie`.
 
 
 
