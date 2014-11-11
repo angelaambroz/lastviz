@@ -26,6 +26,7 @@ lastviz
 17. ~~Style the `<h4>` a bit more...~~
 18. Change mouse icon when hovering over `Update` button.
 19. The actual sunburst/`pie` layout! Specifically, how to get `d.playcount` in my `pie`.
+20. Style: make 2nd (+3rd?) column of `<p>`, in the style of [Shay Howe tutorial on multiple columns](http://learn.shayhowe.com/html-css/positioning-content/).
 
 
 
@@ -33,6 +34,7 @@ lastviz
 
 * API info: [last.fm - user.getTopArtists](http://www.last.fm/api/show/user.getTopArtists)
 * Example: [Mike Bostock - Sunburst](http://bl.ocks.org/mbostock/4063423)
+* Example: [Mike Bostock - Pie chart update, II](https://gist.github.com/mbostock/1346410)
 * Example: [Random JSFiddle - Pie chart](http://jsfiddle.net/ragingsquirrel3/qkHK6/)
 * Example: [NVD3.js - Pie/Ring charts](http://nvd3.org/examples/pie.html)
 * Q&A: [StackOverflow - Update pie chart with new data.json](https://stackoverflow.com/questions/19717519/update-d3-pie-chart-with-new-data-json)
