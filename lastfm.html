@@ -38,10 +38,6 @@ form input {
   margin: 5px;
 }
 
-form placeholder {
-
-}
-
 form {
   border: none;
   font: 100 24px "Lato", sans-serif;
@@ -53,11 +49,12 @@ form {
 }
 
 #topNumber {
-	width: 75px;
+	width: 60px;
 }
 
 .update-button:hover {
 	background-color: #999;
+	cursor: pointer;
 }
 
 .update-button:active {
@@ -70,7 +67,8 @@ form {
 
 	<div class="blurb">
 	<h3>A pretty way to visualize your listening habits</h3>
-	<p>Courtesy of the <a href="http://www.last.fm/api" target="_blank">last.fm API</a>. Use your <a href="http://last.fm" target="_blank">last.fm</a> username. Or your friend's. Or the demo user, <em>rj</em>.</p>
+	<p>Courtesy of the <a href="http://www.last.fm/api" target="_blank">last.fm API</a>.</p> 
+	<p>Use your <a href="http://last.fm" target="_blank">last.fm</a> username. Or your friend's. Or the demo user, <em>rj</em>.</p>
 </div>
 
 		<div class="user-inputs">
@@ -89,24 +87,27 @@ form {
 
 "use strict";
 
+var w = 600,
+	h = 300,
+	radius = Math.min(w, h) / 2,
+	cwidth = 50,
+	color = d3.scale.category20c();
+
+var svg = d3.select("body")
+	.append("svg")
+	.attr("width", w)
+	.attr("height", h)
+	.append("g")
+	.attr("transform", "translate(" + w/2 + "," + h/2 + ")");
+
 
 d3.select('input[type=button]').on('click', function() {
-
-	var w = 300,
-		h = 300,
-		radius = Math.min(w, h) / 2,
-		arc = d3.svg.arc()
-				.innerRadius(innerRadius)
-				.outerRadius(outerRadius),
-		pie = d3.layout.pie(),
-		color = d3.scale.category20b();
   
   var userText = document.getElementById('userName').value,
   	  userNumber = document.getElementById('topNumber').value,
       topArtists, 
       artistTag,
-      dataset,
-      fullData;
+      dataset;
 
    //Change this from an alert() to a tooltip that only displays when wrong.
    if (isNaN(userNumber)) { alert("Please enter a number."); }; 
@@ -124,7 +125,7 @@ d3.select('input[type=button]').on('click', function() {
 		topArtists = json.topartists.artist; 
 
 		
-		//Merge
+		//Merge, using  a dynamic .queue() call
 
 		var q = queue()
 			.defer(d3.json, top);
@@ -139,6 +140,9 @@ d3.select('input[type=button]').on('click', function() {
 
 		q.awaitAll(function() {	
 
+
+				//DATA
+				//Setting up the dataset (merging, cleaning)
 
 				dataset = arguments[1][0].topartists.artist
 				
@@ -161,13 +165,11 @@ d3.select('input[type=button]').on('click', function() {
 
 							dataset[j]["tag"] = artistTag;
 
-						}; //inner if
+						}; //name check conditional if statement
 
-					}; //if/else  
+					}; // if tags exist
 
-
-
-				}; //close for loop
+				}; //close for loop (adding tags to dataset)
 
 
 				//Destring playcount
@@ -175,65 +177,92 @@ d3.select('input[type=button]').on('click', function() {
 					d.playcount = +d.playcount;
 				});
 			
+				//Organizing data by genre/tag
 				dataset = d3.nest()
 					.key(function(d) { return d.tag; })
 					.sortValues(function(a, b) { return parseFloat(b.playcount) - parseFloat(a.playcount); })
 					.entries(dataset);
 
-				console.log(dataset);
 
+				//VISUALIZATION
+
+				//Attempting inner/outer rings.
+
+				var arc = d3.svg.arc()
+					.outerRadius(radius - 10)
+					.innerRadius(radius - 70);
 
 				var pie = d3.layout.pie()
-					//.sort(null)
-					.value(function(d) {
-						return d.playcount;
+					.sort(null)
+					.value(function(d) { 
+						var sum = 0;
+						for (i=0 ; i<d.values.length ; i++) {
+							sum += d.values[i].playcount;
+						}
+						return sum;
 					});
 
-				console.log(pie);
+				console.log(pie(dataset));
+
+				var genres = svg.selectAll("g")
+					.data(d3.values(dataset));
+
+				genres.enter()
+					.append("g");
+
+				var path = genres.selectAll("path")
+					.data(pie(dataset));
+
+				path.enter()
+					.append("path")
+					.attr("fill", function(d, i) { return color(i); })
+					.style("stroke-width", "1px")
+					.style("stroke", "white")
+					.attr("d", arc);
+
+				genres.exit().remove();
+
+				path.exit().remove();
+
+			
 
 
-				var svg = d3.select("body")
-					.append("svg")
-					.attr("width", w)
-					.attr("height", h)
-					.append("g")
-					.attr("transform", "translate(" + w/2 + "," + h * .52 + ")");
+
+
+/*
+				var pie = d3.layout.pie()
+					.sort(null)
+					.value(function(d) { 
+						var sum = 0;
+						for (i=0 ; i<d.values.length ; i++) {
+							sum += d.values[i].playcount;
+						}
+						return sum;
+					});
 
 
 
-
-
-				/*
-
-	 		//The visualization: Sunburst
-
-			var arcs = svg.selectAll("g.arc")
-					.data(pie(topArtists))
+				var g = svg.selectAll(".arc")
+					.data(pie(dataset))
 					.enter()
 					.append("g")
-					.attr("class", "arc")
-					.attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");
+					.attr("class", "arc");
 
-			//Draw arc paths
-				arcs.append("path")
-				    .attr("fill", function(d, i) {
-				    	return color(i);
-				    })
-				    .attr("d", arc);
 
+				g.append("path")
+					.attr("d", arc)
+					.style("stroke-width", "1px")
+					.style("stroke", "white")
+					.style("fill", function(d) { 
+						return color(d.data.key); 
+					});
 */
 
-				
+			}); //queue.awaitAll() closer
 
+  }); //topArtists json call closer
 
-
-
-
-			}); //queue.await closer
-
-  }); //topArtists json call
-
-}); //on click function
+}); //on click function closer
 
 
 </script>
