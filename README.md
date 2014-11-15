@@ -30,6 +30,7 @@ lastviz
 21. A background pic, a color, something to brighten things up.
 22. Meaningful colors - &exist; a color-wheel for music?
 23. "Loading..." thinking wheel. 
+24. Tooltips on hover.
 
 
 

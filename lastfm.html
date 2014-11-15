@@ -74,7 +74,7 @@ form {
 		<div class="user-inputs">
 			<form>
 			What's your username? <input type="text" name="userName" id="userName" placeholder="rj"><br>
-			How many artists do you want to see? <input type="text" id="topNumber" placeholder="1-500"></br>
+			How many artists do you want to see? <input type="text" id="topNumber" placeholder="1-1000"></br>
 			<input name="updateButton" 
            type="button" 
            class="update-button"
@@ -202,7 +202,7 @@ d3.select('input[type=button]').on('click', function() {
 
 				//transitions - need to use arcTween?
 
-				console.log(pie(dataset));
+				//console.log(pie(dataset));
 
 				/*var genres = svg.selectAll("g")
 					.data(d3.values(dataset));
@@ -214,12 +214,12 @@ d3.select('input[type=button]').on('click', function() {
 
 				var path = svg.selectAll("path")
 					.data(pie(dataset));
-
-				//genres.exit().remove();
-
-				//path.transition();
-
+			
 				path.exit().remove();
+
+				/*path.transition()
+					.duration(750)
+					.attrTween("d", arcTween);*/
 
 				path.enter()
 					.append("path")
@@ -228,13 +228,13 @@ d3.select('input[type=button]').on('click', function() {
 					.style("stroke", "white")
 					.attr("d", arc);
 
-				
-				
-
-				
-
-			
-
+				function arcTween(a, d) {
+					var i = d3.interpolate(this._current, a); //things break here
+					this._current = i(0);
+					return function(t) {
+						return arc(i(t));
+					};
+				}
 
 
 
