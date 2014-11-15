@@ -29,6 +29,7 @@ lastviz
 20. Style: make 2nd (+3rd?) column of `<p>`, in the style of [Shay Howe tutorial on multiple columns](http://learn.shayhowe.com/html-css/positioning-content/).
 21. A background pic, a color, something to brighten things up.
 22. Meaningful colors - &exist; a color-wheel for music?
+23. "Loading..." thinking wheel. 
 
 
 

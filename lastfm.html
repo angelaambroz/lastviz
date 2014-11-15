@@ -3,7 +3,7 @@
 
 		<head>
 				<meta charset="utf-8">
-				<title>Last.fm: Testing the JSON</title>
+				<title>Last.fm donuts</title>
 				<!--<<script src="d3/d3.v3.js" charset="utf-8"></script>-->
 				<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 				<script src="http://d3js.org/queue.v1.min.js"></script>
@@ -45,11 +45,11 @@ form {
 }
 
 #userName {
-	width: 200px;
+	width: 250px;
 }
 
 #topNumber {
-	width: 60px;
+	width: 110px;
 }
 
 .update-button:hover {
@@ -166,9 +166,7 @@ d3.select('input[type=button]').on('click', function() {
 							dataset[j]["tag"] = artistTag;
 
 						}; //name check conditional if statement
-
 					}; // if tags exist
-
 				}; //close for loop (adding tags to dataset)
 
 
@@ -202,16 +200,26 @@ d3.select('input[type=button]').on('click', function() {
 						return sum;
 					});
 
+				//transitions - need to use arcTween?
+
 				console.log(pie(dataset));
 
-				var genres = svg.selectAll("g")
+				/*var genres = svg.selectAll("g")
 					.data(d3.values(dataset));
 
-				genres.enter()
-					.append("g");
+				genres.transition();
 
-				var path = genres.selectAll("path")
+				genres.enter()
+					.append("g");*/
+
+				var path = svg.selectAll("path")
 					.data(pie(dataset));
+
+				//genres.exit().remove();
+
+				//path.transition();
+
+				path.exit().remove();
 
 				path.enter()
 					.append("path")
@@ -220,9 +228,10 @@ d3.select('input[type=button]').on('click', function() {
 					.style("stroke", "white")
 					.attr("d", arc);
 
-				genres.exit().remove();
+				
+				
 
-				path.exit().remove();
+				
 
 			
 
