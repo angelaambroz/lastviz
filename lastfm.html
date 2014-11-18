@@ -225,12 +225,10 @@ d3.select('input[type=button]').on('click', function() {
 				path.enter()
 					.append("path")
 					.style("stroke-width", "1px")
-					.style("stroke", "white")
-					.attr("fill", function(d, i) { return color(i); })
-					.attr("d", arc);
+					.style("stroke", "white");
 
-				/*path.attr("fill", function(d, i) { return color(i); })
-					.attr("d", arc);*/
+				path.attr("fill", function(d, i) { return color(i); })
+					.attr("d", arc);
 
 
 				function arcTween(a, d) {
@@ -271,6 +269,8 @@ d3.select('input[type=button]').on('click', function() {
 						return color(d.data.key); 
 					});
 */
+
+
 
 			}); //queue.awaitAll() closer
 

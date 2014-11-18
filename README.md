@@ -13,7 +13,7 @@ lastviz
 4. ~~Can I pull two JSONs at once? Nested `d3.json` pulls?~~ (Yes.)
 5. ~~Merging artist tags with track/artists (ringed donut).~~ (Ballaaaa.)
 6. Second level (outer ring) tooltip on artists: medium pics.
-7. ~~Transitions between users.~~
+7. ~~Transitions between users.~~ ([Thinking with Joins](http://bost.ocks.org/mike/join/) remains mysterious, unknowable.)
 8. `Enter` keystroke = clicking on `Update`?
 9. `click` to bring out the second ring (of topArtists).
 10. ~~Drop-down form of how many results (10, 20, etc?). Or text box?~~ 
