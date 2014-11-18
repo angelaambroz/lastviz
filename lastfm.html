@@ -3,7 +3,7 @@
 
 		<head>
 				<meta charset="utf-8">
-				<title>Last.fm donuts</title>
+				<title>Last.fm: Donuts</title>
 				<!--<<script src="d3/d3.v3.js" charset="utf-8"></script>-->
 				<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 				<script src="http://d3js.org/queue.v1.min.js"></script>
@@ -200,6 +200,7 @@ d3.select('input[type=button]').on('click', function() {
 						return sum;
 					});
 
+
 				//transitions - need to use arcTween?
 
 				//console.log(pie(dataset));
@@ -223,10 +224,14 @@ d3.select('input[type=button]').on('click', function() {
 
 				path.enter()
 					.append("path")
-					.attr("fill", function(d, i) { return color(i); })
 					.style("stroke-width", "1px")
 					.style("stroke", "white")
+					.attr("fill", function(d, i) { return color(i); })
 					.attr("d", arc);
+
+				/*path.attr("fill", function(d, i) { return color(i); })
+					.attr("d", arc);*/
+
 
 				function arcTween(a, d) {
 					var i = d3.interpolate(this._current, a); //things break here
