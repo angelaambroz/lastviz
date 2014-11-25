@@ -4,7 +4,6 @@
 		<head>
 				<meta charset="utf-8">
 				<title>Last.fm: Donuts</title>
-				<!--<<script src="d3/d3.v3.js" charset="utf-8"></script>-->
 				<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 				<script src="http://d3js.org/queue.v1.min.js"></script>
 				<link href='http://fonts.googleapis.com/css?family=Lato:100,100italic,300,300italic' rel='stylesheet' type='text/css'>
@@ -61,11 +60,45 @@ form {
 	background-color: #666;
 }
 
+#tooltip {
+	position: absolute;
+	width: 200px;
+	height: auto;
+	padding: 10px;
+	background-color: none;
+	pointer-events: none;
+}
+
+#tooltip p {
+	margin: 0;
+	font-family: Courier, sans-serif;
+	font-size: 14px;
+	line-height: 15px;
+	color: gray;
+}
+
+#tooltip img {
+	width: 50px;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
+}
+
+#tooltip.hidden {
+	display: none;
+}
+
 </style>
 
 <body>
 
-	<div class="blurb">
+<div id="tooltip" class="hidden" style="left: 600px, top: 400px">
+	<div id="pic"><p><img src="unknown.png"></p></div>
+	<p><strong><span id="genre">hip hop</span></strong></p>
+	<p id="plays">50 plays</p>
+</div>
+
+<div class="blurb">
 	<h3>A pretty way to visualize your listening habits</h3>
 	<p>Courtesy of the <a href="http://www.last.fm/api" target="_blank">last.fm API</a>.</p> 
 	<p>Use your <a href="http://last.fm" target="_blank">last.fm</a> username. Or your friend's. Or the demo user, <em>rj</em>.</p>
@@ -115,6 +148,50 @@ d3.select('input[type=button]').on('click', function() {
   var top = 'http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=' + userText + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json&period=12month&limit=' + userNumber;
 
   var tags = 'http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&mbid=164f0d73-1234-4e2c-8743-d77bf2191051&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json';
+
+  	/*function genreSum(d) {
+		var sum = 0;
+		for (var i=0 ; i < d.data.values.length ; i++) {
+			sum += d.data.values[i].playcount;
+		}
+		return sum + "  plays";
+  	}*/
+
+	function mouseover(d) {
+
+		var sum = 0;
+		for (var j=0 ; j<d.data.values.length ; j++) {
+			sum += d.data.values[j].playcount;
+		};
+
+		var genreIcon = d.data.values[0].image[2]['#text'];
+		console.log(genreIcon);
+
+		d3.select(this).attr("fill", "gray");
+
+		d3.select("#tooltip")
+			.style("left", "225px")
+			.style("top", "525px");
+
+		d3.select("#genre")
+			.text(d.data.key);
+
+		d3.select("#pic")
+			.html('<p><img src="' + genreIcon + '"></p>');
+
+		d3.select("#plays")
+			.text(function(d, i) {
+				return sum + " plays";
+			});
+		   
+		d3.select("#tooltip").classed("hidden", false);
+	};
+
+	function mouseout(d) {
+		d3.select(this).style("fill", function(d, i) { return color(i); });
+		d3.select("#tooltip").classed("hidden", true);
+	};
+
 
 
 	//First JSON call
@@ -213,6 +290,9 @@ d3.select('input[type=button]').on('click', function() {
 				genres.enter()
 					.append("g");*/
 
+				console.log(dataset);
+				//console.log(dataset.values[0].image[1]['#text']);
+
 				var path = svg.selectAll("path")
 					.data(pie(dataset));
 			
@@ -228,7 +308,9 @@ d3.select('input[type=button]').on('click', function() {
 					.style("stroke", "white");
 
 				path.attr("fill", function(d, i) { return color(i); })
-					.attr("d", arc);
+					.attr("d", arc)
+					.on("mouseover", mouseover)
+					.on("mouseout", mouseout);
 
 
 				function arcTween(a, d) {

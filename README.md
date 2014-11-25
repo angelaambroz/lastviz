@@ -28,7 +28,7 @@ lastviz
 19. ~~The actual sunburst/`pie` layout! Specifically, how to get `d.playcount` in my `pie`.~~
 20. Style: make 2nd (+3rd?) column of `<p>`, in the style of [Shay Howe tutorial on multiple columns](http://learn.shayhowe.com/html-css/positioning-content/).
 21. A background pic, a color, something to brighten things up.
-22. Meaningful colors - &exist; a color-wheel for music?
+22. Meaningful colors - &exist; a color-wheel for music? *Or* create simple algorithm where genre text is converted into an `rgb(x,x,x)` thing. That way, it's consistent! 
 23. "Loading..." thinking wheel. 
 24. Tooltips on hover.
 25. *Smooth* transition between users (`attrTween`).
@@ -38,7 +38,9 @@ lastviz
 ### Resources
 
 * API info: [last.fm - user.getTopArtists](http://www.last.fm/api/show/user.getTopArtists)
+* API info (no more artist images wtffff): [last.fm - Removal of artist.getImages method](http://www.last.fm/group/Last.fm+Web+Services/forum/21604/_/2216689)
 * Tutorial: [Mike Bostock - Thinking with Joins](http://bost.ocks.org/mike/join/)
+* Resource: [spin.js](https://fgnass.github.io/spin.js/)
 * Example: [Mike Bostock - Sunburst](http://bl.ocks.org/mbostock/4063423)
 * Example: [Mike Bostock - Pie chart update, II](https://gist.github.com/mbostock/1346410)
 * Example: [Random JSFiddle - Pie chart](http://jsfiddle.net/ragingsquirrel3/qkHK6/)
