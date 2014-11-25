@@ -32,15 +32,17 @@ lastviz
 23. "Loading..." thinking wheel. 
 24. Tooltips on hover.
 25. *Smooth* transition between users (`attrTween`).
+26. Figure out why pics work in Chrome but not Firefox.
 
 
 
 ### Resources
 
 * API info: [last.fm - user.getTopArtists](http://www.last.fm/api/show/user.getTopArtists)
-* API info (no more artist images wtffff): [last.fm - Removal of artist.getImages method](http://www.last.fm/group/Last.fm+Web+Services/forum/21604/_/2216689)
+* API info (no more artist images?): [last.fm - Removal of artist.getImages method](http://www.last.fm/group/Last.fm+Web+Services/forum/21604/_/2216689)
 * Tutorial: [Mike Bostock - Thinking with Joins](http://bost.ocks.org/mike/join/)
 * Resource: [spin.js](https://fgnass.github.io/spin.js/)
+* Resource: [w3schools.com - HTML colors](http://www.w3schools.com/html/html_colors.asp)
 * Example: [Mike Bostock - Sunburst](http://bl.ocks.org/mbostock/4063423)
 * Example: [Mike Bostock - Pie chart update, II](https://gist.github.com/mbostock/1346410)
 * Example: [Random JSFiddle - Pie chart](http://jsfiddle.net/ragingsquirrel3/qkHK6/)

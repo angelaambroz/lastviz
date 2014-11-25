@@ -62,7 +62,7 @@ form {
 
 #tooltip {
 	position: absolute;
-	width: 200px;
+	width: 100px;
 	height: auto;
 	padding: 10px;
 	background-color: none;
@@ -78,7 +78,7 @@ form {
 }
 
 #tooltip img {
-	width: 50px;
+	height: 50px;
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
 	border-radius: 50%;
@@ -115,7 +115,6 @@ form {
 			</form>
 		</div>
 
-
 <script>
 
 "use strict";
@@ -145,17 +144,11 @@ d3.select('input[type=button]').on('click', function() {
    //Change this from an alert() to a tooltip that only displays when wrong.
    if (isNaN(userNumber)) { alert("Please enter a number."); }; 
 
+   if (!userNumber | !userText) { alert("Please enter a username and number."); };
+
   var top = 'http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=' + userText + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json&period=12month&limit=' + userNumber;
 
   var tags = 'http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&mbid=164f0d73-1234-4e2c-8743-d77bf2191051&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json';
-
-  	/*function genreSum(d) {
-		var sum = 0;
-		for (var i=0 ; i < d.data.values.length ; i++) {
-			sum += d.data.values[i].playcount;
-		}
-		return sum + "  plays";
-  	}*/
 
 	function mouseover(d) {
 
@@ -164,14 +157,13 @@ d3.select('input[type=button]').on('click', function() {
 			sum += d.data.values[j].playcount;
 		};
 
-		var genreIcon = d.data.values[0].image[2]['#text'];
-		console.log(genreIcon);
+		var genreIcon = d.data.values[0].image[3]['#text'];
 
 		d3.select(this).attr("fill", "gray");
 
 		d3.select("#tooltip")
-			.style("left", "225px")
-			.style("top", "525px");
+			.style("left", "250px")
+			.style("top", "500px");
 
 		d3.select("#genre")
 			.text(d.data.key);
@@ -189,7 +181,7 @@ d3.select('input[type=button]').on('click', function() {
 
 	function mouseout(d) {
 		d3.select(this).style("fill", function(d, i) { return color(i); });
-		d3.select("#tooltip").classed("hidden", true);
+		d3.select("#tooltip").classed("hidden", true)
 	};
 
 
@@ -280,8 +272,6 @@ d3.select('input[type=button]').on('click', function() {
 
 				//transitions - need to use arcTween?
 
-				//console.log(pie(dataset));
-
 				/*var genres = svg.selectAll("g")
 					.data(d3.values(dataset));
 
@@ -289,9 +279,6 @@ d3.select('input[type=button]').on('click', function() {
 
 				genres.enter()
 					.append("g");*/
-
-				console.log(dataset);
-				//console.log(dataset.values[0].image[1]['#text']);
 
 				var path = svg.selectAll("path")
 					.data(pie(dataset));
@@ -307,7 +294,10 @@ d3.select('input[type=button]').on('click', function() {
 					.style("stroke-width", "1px")
 					.style("stroke", "white");
 
-				path.attr("fill", function(d, i) { return color(i); })
+				path.attr("fill", function(d) { 
+					console.log(d.data.values[0].playcount);
+					return "rgb("+d.data.values[0].playcount+","+d.data.values[0].playcount+","+d.data.values[0].playcount+")";
+					})
 					.attr("d", arc)
 					.on("mouseover", mouseover)
 					.on("mouseout", mouseout);
