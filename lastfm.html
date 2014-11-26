@@ -71,8 +71,7 @@ form {
 
 #tooltip p {
 	margin: 0;
-	font-family: Courier, sans-serif;
-	font-size: 14px;
+	font: 400 14px 'Raleway', sans-serif;
 	line-height: 15px;
 	color: gray;
 }
@@ -123,7 +122,7 @@ var w = 600,
 	h = 300,
 	radius = Math.min(w, h) / 2,
 	cwidth = 50,
-	color = d3.scale.category20c();
+	color = d3.scale.category20();
 
 var svg = d3.select("body")
 	.append("svg")
@@ -150,6 +149,8 @@ d3.select('input[type=button]').on('click', function() {
 
   var tags = 'http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&mbid=164f0d73-1234-4e2c-8743-d77bf2191051&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json';
 
+  	var comma = d3.format(",");
+
 	function mouseover(d) {
 
 		var sum = 0;
@@ -159,11 +160,11 @@ d3.select('input[type=button]').on('click', function() {
 
 		var genreIcon = d.data.values[0].image[3]['#text'];
 
-		d3.select(this).attr("fill", "gray");
+		d3.select(this).style("stroke-width", "6px");
 
 		d3.select("#tooltip")
-			.style("left", "250px")
-			.style("top", "500px");
+			.style("left", "260px")
+			.style("top", "520px");
 
 		d3.select("#genre")
 			.text(d.data.key);
@@ -173,15 +174,20 @@ d3.select('input[type=button]').on('click', function() {
 
 		d3.select("#plays")
 			.text(function(d, i) {
-				return sum + " plays";
+				return comma(sum) + " plays";
 			});
 		   
 		d3.select("#tooltip").classed("hidden", false);
 	};
 
 	function mouseout(d) {
-		d3.select(this).style("fill", function(d, i) { return color(i); });
+		
+		d3.select(this)
+			.style("fill", function(d) { return color(d.data.key.length - d.data.key.charCodeAt(0)); })
+			.style("stroke-width", "1px");
+		
 		d3.select("#tooltip").classed("hidden", true)
+
 	};
 
 
@@ -233,6 +239,13 @@ d3.select('input[type=button]').on('click', function() {
 							artistTag = arguments[1][i].toptags.tag[0].name.toLowerCase().split('-').join(' ');
 
 							dataset[j]["tag"] = artistTag;
+
+							var red = artistTag.charCodeAt(0) - artistTag.length;
+							var green = artistTag.charCodeAt(1) - 2*artistTag.length;
+							var blue = artistTag.charCodeAt(2) - 3*artistTag.length;
+
+							dataset[j]["rgb"] = red + "," + green + "," + blue;
+
 
 						}; //name check conditional if statement
 					}; // if tags exist
@@ -294,9 +307,8 @@ d3.select('input[type=button]').on('click', function() {
 					.style("stroke-width", "1px")
 					.style("stroke", "white");
 
-				path.attr("fill", function(d) { 
-					console.log(d.data.values[0].playcount);
-					return "rgb("+d.data.values[0].playcount+","+d.data.values[0].playcount+","+d.data.values[0].playcount+")";
+				path.style("fill", function(d) { 
+						return color(d.data.key.length - d.data.key.charCodeAt(0));
 					})
 					.attr("d", arc)
 					.on("mouseover", mouseover)
