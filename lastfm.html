@@ -77,6 +77,7 @@ form input {
 
 #tooltip img {
 	height: 50px;
+	width: 50px;
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
 	border-radius: 50%;
@@ -162,7 +163,7 @@ d3.select('input[type=button]').on('click', function() {
 		d3.select(this).style("stroke-width", "6px");
 
 		d3.select("#tooltip")
-			.style("left", "260px")
+			.style("left", "270px")
 			.style("top", "520px");
 
 		d3.select("#genre")
@@ -267,11 +268,24 @@ d3.select('input[type=button]').on('click', function() {
 
 				//VISUALIZATION
 
-				//Attempting inner/outer rings.
+
+				var scale = d3.scale.linear()
+					.range([10,100])
+					.domain([0, 10000]);
+
+				var totalPlays = 0;
+
+				dataset.forEach(function(d) {
+					for (var i = 0; i < d.values.length ; i++) {
+						totalPlays += (d.values[i].playcount);
+					}
+				});
+
+				console.log(totalPlays);
 
 				var arc = d3.svg.arc()
 					.outerRadius(radius)
-					.innerRadius(radius - 50);
+					.innerRadius(radius - scale(totalPlays));
 
 				var pie = d3.layout.pie()
 					.sort(null)
@@ -308,15 +322,9 @@ d3.select('input[type=button]').on('click', function() {
 					.style("stroke-width", "1px")
 					.style("stroke", "white");
 
-				var totalPlays = 0;
-
-				console.log(pie(dataset));
+				//console.log(pie(dataset));
 
 				//totalPlays += d.value;	
-
-				var scale = d3.scale.linear()
-					.range([10,125])
-					.domain([0, 5000]);
 
 
 				//arc.innerRadius(radius - 50);
