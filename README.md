@@ -27,13 +27,13 @@ lastviz
 18. ~~Change mouse icon when hovering over `Update` button.~~
 19. ~~The actual sunburst/`pie` layout! Specifically, how to get `d.playcount` in my `pie`.~~
 20. Style: make 2nd (+3rd?) column of `<p>`, in the style of [Shay Howe tutorial on multiple columns](http://learn.shayhowe.com/html-css/positioning-content/).
-21. A background pic, a color, something to brighten things up.
+21. ~~A background pic, a color, something to brighten things up.~~ (Stylish enough.)
 22. ~~Meaningful colors - &exist; a color-wheel for music? *Or* create simple algorithm where genre text is converted into an `rgb(x,x,x)` thing. That way, it's consistent!~~ (As meaningful as they're gonna get.) 
 23. "Loading..." thinking wheel/text. 
 24. ~~Tooltips on hover.~~
 25. *Smooth* transition between users (`attrTween`).
 26. Figure out why pics work in Chrome (+FF@work) but not Firefox.
-27. Error message if user hasn't listened to anything in past 12 months.
+27. ~~Error message if user hasn't listened to anything in past 12 months.~~
 28. Double-click to open last.fm URL on either the `topArtist` or `artistTag`. 
 29. Permanent tooltip showing the total sum playcount for user (top left; same style as inner ring tooltip). 
 30. ~~Make the donut width a `function` of total playcount. (Use `d3.scale()` to delimit the output domain for the `.innerRadius()`.)~~

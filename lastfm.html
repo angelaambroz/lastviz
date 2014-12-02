@@ -106,7 +106,7 @@ form input {
 		<div class="user-inputs">
 			<form>
 			What's your username? <input type="text" name="userName" id="userName" placeholder="rj"><br>
-			How many artists do you want to see? <input type="text" id="topNumber" placeholder="1-1000"></br>
+			How many artists do you want to see? <input type="text" id="topNumber" placeholder="1-100"></br>
 			<input name="updateButton" 
            type="button" 
            class="update-button"
@@ -197,6 +197,10 @@ d3.select('input[type=button]').on('click', function() {
 	d3.json(top, function(error, json) {
 
 	    if(error) { return console.log(error); } 
+
+	    if(!json.topartists) { alert("Not a username. Try something else.") };
+
+	    if(!json.topartists.artist) { alert("It seems you haven't listened to anything in a long while. Try another username.") };
 
 		topArtists = json.topartists.artist; 
 
