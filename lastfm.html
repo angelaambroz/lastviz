@@ -264,12 +264,14 @@ d3.select('input[type=button]').on('click', function() {
 					.entries(dataset);
 
 
+
 				//VISUALIZATION
 
 				//Attempting inner/outer rings.
 
 				var arc = d3.svg.arc()
-					.outerRadius(radius);
+					.outerRadius(radius)
+					.innerRadius(radius - 50);
 
 				var pie = d3.layout.pie()
 					.sort(null)
@@ -306,15 +308,18 @@ d3.select('input[type=button]').on('click', function() {
 					.style("stroke-width", "1px")
 					.style("stroke", "white");
 
-				var totalPlays = 0;	
+				var totalPlays = 0;
 
-				var plays = d3.scale.linear()			
+				console.log(pie(dataset));
 
-				arc.innerRadius(function(d) {
-					totalPlays += d.value;	
-					console.log(totalPlays);
-					return radius - 50;
-				});
+				//totalPlays += d.value;	
+
+				var scale = d3.scale.linear()
+					.range([10,125])
+					.domain([0, 5000]);
+
+
+				//arc.innerRadius(radius - 50);
 
 
 				path.style("fill", function(d) { 
