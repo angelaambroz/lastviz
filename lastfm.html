@@ -139,11 +139,11 @@ d3.select('input[type=button]').on('click', function() {
       artistTag,
       dataset;
 
-   //Change this from an alert() to a tooltip that only displays when wrong.
    if (isNaN(userNumber)) { alert("Please enter a number."); }; 
 
    if (!userNumber | !userText) { alert("Please enter a username and number."); };
 
+   //URLs
   var top = 'http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=' + userText + '&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json&period=12month&limit=' + userNumber;
 
   var tags = 'http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&mbid=164f0d73-1234-4e2c-8743-d77bf2191051&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json';
@@ -285,7 +285,7 @@ d3.select('input[type=button]').on('click', function() {
 					}
 				});
 
-				console.log(totalPlays);
+				
 
 				var arc = d3.svg.arc()
 					.outerRadius(radius)
@@ -293,26 +293,23 @@ d3.select('input[type=button]').on('click', function() {
 
 				var pie = d3.layout.pie()
 					.sort(null)
-					.value(function(d) { 
+					.value(function(d) {
+						console.log(d.values); 
 						var sum = 0;
-						for (i=0 ; i<d.values.length ; i++) {
+						for (i=0 ; i < d.values.length ; i++) {
 							sum += d.values[i].playcount;
 						}
 						return sum;
 					});
 
 
-				//transitions - need to use arcTween?
-
-				/*var genres = svg.selectAll("g")
-					.data(d3.values(dataset));
-
-				genres.transition();
+				var genres = svg.selectAll("g")
+					.data(dataset);
 
 				genres.enter()
-					.append("g");*/
+					.append("g");
 
-				var path = svg.selectAll("path")
+				var path = genres.selectAll("path")
 					.data(pie(dataset));
 			
 				path.exit().remove();
@@ -325,13 +322,6 @@ d3.select('input[type=button]').on('click', function() {
 					.append("path")
 					.style("stroke-width", "1px")
 					.style("stroke", "white");
-
-				//console.log(pie(dataset));
-
-				//totalPlays += d.value;	
-
-
-				//arc.innerRadius(radius - 50);
 
 
 				path.style("fill", function(d) { 
@@ -361,14 +351,6 @@ d3.select('input[type=button]').on('click', function() {
 					.append("g")
 					.attr("class", "arc");
 
-
-				g.append("path")
-					.attr("d", arc)
-					.style("stroke-width", "1px")
-					.style("stroke", "white")
-					.style("fill", function(d) { 
-						return color(d.data.key); 
-					});
 */
 
 
