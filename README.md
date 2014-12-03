@@ -51,6 +51,7 @@ lastviz
 * Example: [Mike Bostock - Pie chart update, II](https://gist.github.com/mbostock/1346410)
 * Example: [Random JSFiddle - Pie chart](http://jsfiddle.net/ragingsquirrel3/qkHK6/)
 * Example: [NVD3.js - Pie/Ring charts](http://nvd3.org/examples/pie.html)
+* Example: [kerryrodden - Sequences sunburst](http://bl.ocks.org/kerryrodden/7090426)
 * Q&A: [StackOverflow - Update pie chart with new data.json](https://stackoverflow.com/questions/19717519/update-d3-pie-chart-with-new-data-json)
 * Q&A: [StackOverflow - Dynamic defers in queue.js](https://stackoverflow.com/questions/21687230/dynamically-change-the-number-of-defer-calls-in-queue-js)
 * Q&A: [StackOverflow - Donut chart with multiple rings](https://stackoverflow.com/questions/17507728/d3-js-donut-charts-with-multiple-rings)

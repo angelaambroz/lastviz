@@ -219,7 +219,7 @@ d3.select('input[type=button]').on('click', function() {
 				});
 
 
-		q.awaitAll(function() {	
+		q.awaitAll(function(error, root) {	
 
 
 				//DATA
@@ -246,12 +246,6 @@ d3.select('input[type=button]').on('click', function() {
 
 							dataset[j]["tag"] = artistTag;
 
-							var red = artistTag.charCodeAt(0) - artistTag.length;
-							var green = artistTag.charCodeAt(1) - 2*artistTag.length;
-							var blue = artistTag.charCodeAt(2) - 3*artistTag.length;
-
-							dataset[j]["rgb"] = red + "," + green + "," + blue;
-
 
 						}; //name check conditional if statement
 					}; // if tags exist
@@ -268,7 +262,7 @@ d3.select('input[type=button]').on('click', function() {
 					.sortValues(function(a, b) { return parseFloat(b.playcount) - parseFloat(a.playcount); })
 					.entries(dataset);
 
-
+				console.log(dataset);
 
 				//VISUALIZATION
 
@@ -285,13 +279,26 @@ d3.select('input[type=button]').on('click', function() {
 					}
 				});
 
-				
+				//attempting sunburst
+
+				var partition = d3.layout.partition()
+					.sort(null)
+					.size([2*Math.PI, radius*radius])
+					.value(function(d) { 
+						console.log(d);
+						return 1; 
+					});
 
 				var arc = d3.svg.arc()
-					.outerRadius(radius)
-					.innerRadius(radius - scale(totalPlays));
+					.startAngle(function(d) { return d.x; })
+					.endAngle(function(d) { return d.x + d.dx; })
+					.innerRadius(function(d) { return Math.sqrt(d.y); })
+					.outerRadius(function(d) { return Math.sqrt(d.y + d.y); });
 
-				var pie = d3.layout.pie()
+					//.outerRadius(radius)
+					//.innerRadius(radius - scale(totalPlays));
+
+				/*var pie = d3.layout.pie()
 					.sort(null)
 					.value(function(d) {
 						console.log(d.values); 
@@ -300,17 +307,21 @@ d3.select('input[type=button]').on('click', function() {
 							sum += d.values[i].playcount;
 						}
 						return sum;
-					});
+					});*/
 
 
-				var genres = svg.selectAll("g")
+				/*var genres = svg.selectAll("g")
 					.data(dataset);
 
 				genres.enter()
-					.append("g");
+					.append("g"); */
 
-				var path = genres.selectAll("path")
-					.data(pie(dataset));
+				var path = svg.datum(root).selectAll("path")
+					.data(function(d) {
+						console.log(partition.dataset);
+						//console.log(nodes);
+						return partition.nodes; 
+					});
 			
 				path.exit().remove();
 
@@ -325,11 +336,14 @@ d3.select('input[type=button]').on('click', function() {
 
 
 				path.style("fill", function(d) { 
-						return color(d.data.key.length - d.data.key.charCodeAt(0));
+						return "blue";
+						//return color(d.data.key.length - d.data.key.charCodeAt(0));
 					})
+					.attr("display", function(d) { return d.depth ? null: "none"; })
 					.attr("d", arc)
 					.on("mouseover", mouseover)
 					.on("mouseout", mouseout);
+
 
 
 				function arcTween(a, d) {
