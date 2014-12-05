@@ -49,6 +49,7 @@ lastviz
 * Resource: [w3schools.com - HTML colors](http://www.w3schools.com/html/html_colors.asp)
 * Example: [Mike Bostock - Sunburst](http://bl.ocks.org/mbostock/4063423)
 * Example: [Mike Bostock - Pie chart update, II](https://gist.github.com/mbostock/1346410)
+* Example: [Mike Bostock - Bilevel partition](http://bl.ocks.org/mbostock/5944371)
 * Example: [Random JSFiddle - Pie chart](http://jsfiddle.net/ragingsquirrel3/qkHK6/)
 * Example: [NVD3.js - Pie/Ring charts](http://nvd3.org/examples/pie.html)
 * Example: [kerryrodden - Sequences sunburst](http://bl.ocks.org/kerryrodden/7090426)

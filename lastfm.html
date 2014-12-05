@@ -254,7 +254,8 @@ d3.select('input[type=button]').on('click', function() {
 				dataset.forEach(function(d) {
 					d.playcount = +d.playcount;
 				});
-			
+
+				console.log(dataset);
 
 				//Organizing data by genre/tag
 				dataset = d3.nest()
@@ -263,6 +264,7 @@ d3.select('input[type=button]').on('click', function() {
 					.entries(dataset);
 
 				console.log(dataset);
+
 
 				//VISUALIZATION
 
@@ -280,14 +282,18 @@ d3.select('input[type=button]').on('click', function() {
 				});
 
 				//attempting sunburst
+				//to do: figure out how to partitionize the entire dataset
+				//right now it's not propagating down the data (from genre to each artist)
+				//it's returning the entire dataset, when i want d
 
 				var partition = d3.layout.partition()
 					.sort(null)
 					.size([2*Math.PI, radius*radius])
 					.value(function(d) { 
-						console.log(d);
 						return 1; 
-					});
+					}); 
+
+				console.log(partition(dataset));
 
 				var arc = d3.svg.arc()
 					.startAngle(function(d) { return d.x; })
@@ -316,13 +322,15 @@ d3.select('input[type=button]').on('click', function() {
 				genres.enter()
 					.append("g"); */
 
-				var path = svg.datum(root).selectAll("path")
+				var path = svg.datum(dataset).selectAll("path")
 					.data(function(d) {
-						console.log(partition.dataset);
-						//console.log(nodes);
-						return partition.nodes; 
+						console.log(partition(dataset));
+						return partition(dataset);
 					});
 			
+
+
+
 				path.exit().remove();
 
 				/*path.transition()
