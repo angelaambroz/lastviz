@@ -154,11 +154,11 @@ d3.select('input[type=button]').on('click', function() {
 
 		var sum = 0;
 		
-		for (var j=0 ; j<d.data.values.length ; j++) {
-			sum += d.data.values[j].playcount;
+		for (var j=0 ; j<d.values.length ; j++) {
+			sum += d.values[j].playcount;
 		};
 
-		var genreIcon = d.data.values[0].image[3]['#text'];
+		var genreIcon = d.values[0].image[3]['#text'];
 
 		d3.select(this).style("stroke-width", "6px");
 
@@ -167,7 +167,7 @@ d3.select('input[type=button]').on('click', function() {
 			.style("top", "520px");
 
 		d3.select("#genre")
-			.text(d.data.key);
+			.text(d.key);
 
 		d3.select("#pic")
 			.html('<p><img src="' + genreIcon + '"></p>');
@@ -184,7 +184,7 @@ d3.select('input[type=button]').on('click', function() {
 	function mouseout(d) {
 		
 		d3.select(this)
-			.style("fill", function(d) { return color(d.data.key.length - d.data.key.charCodeAt(0)); })
+			.style("fill", fillcolor)
 			.style("stroke-width", "1px");
 		
 		d3.select("#tooltip").classed("hidden", true)
@@ -192,6 +192,10 @@ d3.select('input[type=button]').on('click', function() {
 	}; //mouseout
 
 
+	function fillcolor(d) {
+
+  		return color(d.key.length - d.key.charCodeAt(0));
+  	};
 
 	//First JSON call
 	d3.json(top, function(error, json) {
@@ -263,14 +267,12 @@ d3.select('input[type=button]').on('click', function() {
 					.entries(dataset);
 
 
-				console.log(dataset);
-
 
 				//VISUALIZATION
 
 
 				var scale = d3.scale.linear()
-					.range([-20,100])
+					.range([-30,70])
 					.domain([0, 10000]);
 
 				var totalPlays = 0;
@@ -281,22 +283,32 @@ d3.select('input[type=button]').on('click', function() {
 					}
 				});
 
+				console.log(dataset);
+
+				var entries = d3.entries(dataset);
+				console.log(entries);
+
 				//attempting sunburst
 				//to do: figure out how to partitionize the entire dataset
 
 				var partition = d3.layout.partition()
 					.sort(null)
 					.children(function(d) {
-						console.log(d.values);
-						return d;
+						/*for (j = 0; j < i ; j ++ ) {
+							if (d[j]) { 
+								return d[j].values;
+							}
+						}*/
+						return d; 
 					})
 					.size([2*Math.PI, radius*radius])
-					.value(function(d) { 
+					.value(function(d) {
 						var sum = 0;
+						if (d.depth===1) {
 						for (i=0 ; i < d.values.length ; i++) {
 							sum += d.values[i].playcount;
+							}
 						}
-						console.log(d);
 						return sum;
 					}); 
 
@@ -305,19 +317,6 @@ d3.select('input[type=button]').on('click', function() {
 					.endAngle(function(d) { return d.x + d.dx; })
 					.innerRadius(function(d) { return Math.sqrt(d.y)-scale(totalPlays); })
 					.outerRadius(function(d) { return Math.sqrt(d.y + d.y); });
-
-					//.innerRadius(radius - scale(totalPlays));
-
-				/*var pie = d3.layout.pie()
-					.sort(null)
-					.value(function(d) {
-						console.log(d.values); 
-						var sum = 0;
-						for (i=0 ; i < d.values.length ; i++) {
-							sum += d.values[i].playcount;
-						}
-						return sum;
-					});*/
 
 
 				/*var genres = svg.selectAll("g")
@@ -329,7 +328,6 @@ d3.select('input[type=button]').on('click', function() {
 				var path = svg.datum(dataset).selectAll("path")
 					.data(partition(dataset));
 			
-
 				path.exit().remove();
 
 				/*path.transition()
@@ -342,14 +340,13 @@ d3.select('input[type=button]').on('click', function() {
 					.style("stroke", "white");
 
 
-				path.style("fill", function(d) { 
-						return "blue";
-						//return color(d.data.key.length - d.data.key.charCodeAt(0));
-					})
-					.attr("display", function(d) { return d.depth ? null: "none"; })
+				path.attr("display", function(d) { return d.depth ? null: "none"; })
 					.attr("d", arc)
 					.on("mouseover", mouseover)
-					.on("mouseout", mouseout);
+					.on("mouseout", mouseout)
+					.style("fill", function(d) {
+						return d.depth ? 1: "fillcolor"; 
+					});
 
 
 
@@ -360,19 +357,6 @@ d3.select('input[type=button]').on('click', function() {
 						return arc(i(t));
 					};
 				}
-
-
-
-/*
-
-
-				var g = svg.selectAll(".arc")
-					.data(pie(dataset))
-					.enter()
-					.append("g")
-					.attr("class", "arc");
-
-*/
 
 
 
