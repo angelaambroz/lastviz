@@ -32,7 +32,7 @@ lastviz
 23. "Loading..." thinking wheel/text. 
 24. ~~Tooltips on hover.~~
 25. *Smooth* transition between users (`attrTween`).
-26. Figure out why pics work in Chrome (+FF@work) but not Firefox.
+26. Figure out why pics work in Chrome (+FF@work) but not Firefox@home.
 27. ~~Error message if user hasn't listened to anything in past 12 months.~~
 28. Double-click to open last.fm URL on either the `topArtist` or `artistTag`. 
 29. Permanent tooltip showing the total sum playcount for user (top left; same style as inner ring tooltip). 
