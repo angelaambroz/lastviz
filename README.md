@@ -44,7 +44,6 @@ lastviz
 ### Resources
 
 * API info: [last.fm - user.getTopArtists](http://www.last.fm/api/show/user.getTopArtists)
-* API info (no more artist images?): [last.fm - Removal of artist.getImages method](http://www.last.fm/group/Last.fm+Web+Services/forum/21604/_/2216689)
 * Tutorial: [Mike Bostock - Thinking with Joins](http://bost.ocks.org/mike/join/)
 * Resource: [spin.js](https://fgnass.github.io/spin.js/)
 * Resource: [w3schools.com - HTML colors](http://www.w3schools.com/html/html_colors.asp)

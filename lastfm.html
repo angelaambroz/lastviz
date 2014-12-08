@@ -61,7 +61,7 @@ form input {
 
 #tooltip {
 	position: absolute;
-	width: 100px;
+	width: 90px;
 	height: auto;
 	padding: 10px;
 	background-color: none;
@@ -121,8 +121,14 @@ form input {
 var w = 600,
 	h = 300,
 	radius = Math.min(w, h) / 2, 
+	totalPlays = 0,
 	color = d3.scale.category20(),
 	genreIcon;
+
+var scale = d3.scale.linear()
+	.range([-15,20])
+	.domain([0, 10000]);
+
 
 var svg = d3.select("body")
 	.append("svg")
@@ -222,8 +228,8 @@ d3.select('input[type=button]').on('click', function() {
 
   		if (d.depth==2) {
   			var parentColor = d3.hsl(color(d.parent.name.length - d.parent.name.charCodeAt(0)));
-  			parentColor.s -= 0.11;
-  			parentColor.l += 0.11;
+  			parentColor.s -= 0.1;
+  			parentColor.l += 0.1;
   			return parentColor;
 
   		};
@@ -315,11 +321,6 @@ d3.select('input[type=button]').on('click', function() {
 				//VISUALIZATION
 
 
-				var scale = d3.scale.linear()
-					.range([-30,70])
-					.domain([0, 10000]);
-
-
 				var partition = d3.layout.partition()
 					.sort(null)
 					.size([2*Math.PI, radius*radius])
@@ -327,12 +328,23 @@ d3.select('input[type=button]').on('click', function() {
 						return d.playcount;
 					});
 
+				console.log(totalPlays);
 
 				var arc = d3.svg.arc()
 					.startAngle(function(d) { return d.x; })
 					.endAngle(function(d) { return d.x + d.dx; })
-					.innerRadius(function(d) { return Math.sqrt(d.y) /*scale(totalPlays)*/; })
-					.outerRadius(function(d) { return Math.sqrt(d.y + d.y); });
+					.innerRadius(function(d) { 
+						//thick genres
+						if (d.depth==1) { 
+							console.log(d);
+							totalPlays += d.value;
+							console.log(totalPlays);
+							return Math.sqrt(d.y)-15; 
+						} 
+						if (d.depth==2) { return Math.sqrt(d.y); }
+						/*ADD THE +scale(totalPlays)*/
+					})
+					.outerRadius(function(d) { return Math.sqrt(d.y+d.dy) });
 
 
 				var path = svg.datum(dataset).selectAll("path")
