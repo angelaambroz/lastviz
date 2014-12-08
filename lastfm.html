@@ -93,7 +93,7 @@ form input {
 
 <div id="tooltip" class="hidden" style="left: 600px, top: 400px">
 	<div id="pic"><p><img src="unknown.png"></p></div>
-	<p><strong><span id="genre">hip hop</span></strong></p>
+	<p><span id="genre">hip hop</span></p>
 	<p id="plays">50 plays</p>
 </div>
 
@@ -121,7 +121,8 @@ form input {
 var w = 600,
 	h = 300,
 	radius = Math.min(w, h) / 2, 
-	color = d3.scale.category20();
+	color = d3.scale.category20(),
+	genreIcon;
 
 var svg = d3.select("body")
 	.append("svg")
@@ -152,13 +153,7 @@ d3.select('input[type=button]').on('click', function() {
 
 	function mouseover(d) {
 
-		var sum = 0;
-		
-		for (var j=0 ; j<d.values.length ; j++) {
-			sum += d.values[j].playcount;
-		};
-
-		var genreIcon = d.values[0].image[3]['#text'];
+		//console.log(d);
 
 		d3.select(this).style("stroke-width", "6px");
 
@@ -166,35 +161,73 @@ d3.select('input[type=button]').on('click', function() {
 			.style("left", "270px")
 			.style("top", "520px");
 
-		d3.select("#genre")
-			.text(d.key);
+		if (d.depth==1) {
 
-		d3.select("#pic")
-			.html('<p><img src="' + genreIcon + '"></p>');
+			var sum = 0;
+			
+			for (var j=0 ; j<d.children.length ; j++) {
+				sum += d.children[j].playcount;
+			};
 
-		d3.select("#plays")
-			.text(function(d, i) {
-				return comma(sum) + " plays";
-			});
-		   
+			genreIcon = d.children[0].image[3]['#text'];
+
+			d3.select("#genre")
+				.html('<strong>' + d.name + '</strong>');
+
+			d3.select("#pic")
+				.html('<p><img src="' + genreIcon + '"></p>');
+
+			d3.select("#plays")
+				.text(function(d, i) {
+					return comma(sum) + " plays";
+				});
+
+		}; //genre depth
+
+		if (d.depth==2) {
+
+			genreIcon = d.image[3]['#text'];
+
+			d3.select("#genre")
+				.html('<em>' + d.name + '</em>');
+
+			d3.select("#pic")
+				.html('<p><img src="' + genreIcon + '"></p>');
+
+			d3.select("#plays")
+				.text(comma(d.playcount) + " plays");
+
+		}; //artist depth
+
 		d3.select("#tooltip").classed("hidden", false);
 	
 	}; //mouseover
 
 	function mouseout(d) {
 		
+		d3.select("#tooltip").classed("hidden", true);
+
 		d3.select(this)
 			.style("fill", fillcolor)
 			.style("stroke-width", "1px");
-		
-		d3.select("#tooltip").classed("hidden", true)
 
 	}; //mouseout
 
 
 	function fillcolor(d) {
 
-  		return color(d.key.length - d.key.charCodeAt(0));
+		if (d.depth==1) {
+			return color(d.name.length - d.name.charCodeAt(0));			
+		};
+
+  		if (d.depth==2) {
+  			var parentColor = d3.hsl(color(d.parent.name.length - d.parent.name.charCodeAt(0)));
+  			parentColor.s -= 0.11;
+  			parentColor.l += 0.11;
+  			return parentColor;
+
+  		};
+  	
   	};
 
 	//First JSON call
@@ -269,7 +302,7 @@ d3.select('input[type=button]').on('click', function() {
 				};
 
 				//Treemap-ifying
-				var dataset2 = { "name": "root", "children":
+				dataset = { "name": "root", "children":
 			        dataset.values.map(function(d){
 			            return { "name": d.key, "children": 
 			              d.values
@@ -277,23 +310,6 @@ d3.select('input[type=button]').on('click', function() {
 
 			         }) 
 			      };
-
-			    dataset = dataset2;
-
-				/*//Array-fying
-				dataset = [dataset2];
-
-				var totalPlays = 0;
-
-				dataset.forEach(function(d) {
-					for (var i = 0; i < d.children.length ; i++) {
-						for (var j = 0 ; j < d.children[i].children.length ; j++) {
-							totalPlays += (d.children[i].children[j].playcount);
-						}
-					}
-				});*/
-
-
 
 
 				//VISUALIZATION
@@ -303,9 +319,6 @@ d3.select('input[type=button]').on('click', function() {
 					.range([-30,70])
 					.domain([0, 10000]);
 
-
-				//attempting sunburst
-				//to do: figure out how to partitionize the entire dataset
 
 				var partition = d3.layout.partition()
 					.sort(null)
@@ -318,15 +331,9 @@ d3.select('input[type=button]').on('click', function() {
 				var arc = d3.svg.arc()
 					.startAngle(function(d) { return d.x; })
 					.endAngle(function(d) { return d.x + d.dx; })
-					.innerRadius(function(d) { return Math.sqrt(d.y)-10 /*scale(totalPlays)*/; })
+					.innerRadius(function(d) { return Math.sqrt(d.y) /*scale(totalPlays)*/; })
 					.outerRadius(function(d) { return Math.sqrt(d.y + d.y); });
 
-
-				/*var genres = svg.selectAll("g")
-					.data(dataset);
-
-				genres.enter()
-					.append("g"); */
 
 				var path = svg.datum(dataset).selectAll("path")
 					.data(partition(dataset));
@@ -347,9 +354,7 @@ d3.select('input[type=button]').on('click', function() {
 					.attr("d", arc)
 					.on("mouseover", mouseover)
 					.on("mouseout", mouseout)
-					.style("fill", function(d) {
-						return d.depth ? 1: "fillcolor"; 
-					});
+					.style("fill", fillcolor);
 
 
 
