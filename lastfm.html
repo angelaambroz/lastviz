@@ -261,10 +261,26 @@ d3.select('input[type=button]').on('click', function() {
 
 
 				//Organizing data by genre/tag
-				dataset = d3.nest()
+				dataset = { "key": "music", "values":
+					d3.nest()
 					.key(function(d) { return d.tag; })
 					.sortValues(function(a, b) { return parseFloat(b.playcount) - parseFloat(a.playcount); })
-					.entries(dataset);
+					.entries(dataset)
+				};
+
+				//Treemap-ifying
+				var dataset2 = { "name": "music", "children":
+			        dataset.values.map(function(d){
+			            return { "name": d.key, "children": 
+			              d.values
+			            }; 
+
+			         }) 
+			      };
+
+				//Array-fying
+				dataset = [dataset2];
+
 
 
 
@@ -277,28 +293,30 @@ d3.select('input[type=button]').on('click', function() {
 
 				var totalPlays = 0;
 
+
 				dataset.forEach(function(d) {
-					for (var i = 0; i < d.values.length ; i++) {
-						totalPlays += (d.values[i].playcount);
+					for (var i = 0; i < d.children.length ; i++) {
+						for (var j = 0 ; j < d.children[i].children.length ; j++) {
+							totalPlays += (d.children[i].children[j].playcount);
+						}
 					}
 				});
 
-				console.log(dataset);
+				console.log(totalPlays);
 
-				var entries = d3.entries(dataset);
-				console.log(entries);
+
 
 				//attempting sunburst
 				//to do: figure out how to partitionize the entire dataset
 
-				var partition = d3.layout.partition()
+				/* var partition = d3.layout.partition()
 					.sort(null)
 					.children(function(d) {
-						/*for (j = 0; j < i ; j ++ ) {
+						for (j = 0; j < i ; j ++ ) {
 							if (d[j]) { 
 								return d[j].values;
 							}
-						}*/
+						}
 						return d; 
 					})
 					.size([2*Math.PI, radius*radius])
@@ -310,7 +328,7 @@ d3.select('input[type=button]').on('click', function() {
 							}
 						}
 						return sum;
-					}); 
+					}); */
 
 				var arc = d3.svg.arc()
 					.startAngle(function(d) { return d.x; })

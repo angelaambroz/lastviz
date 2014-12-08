@@ -37,6 +37,7 @@ lastviz
 28. Double-click to open last.fm URL on either the `topArtist` or `artistTag`. 
 29. Permanent tooltip showing the total sum playcount for user (top left; same style as inner ring tooltip). 
 30. ~~Make the donut width a `function` of total playcount. (Use `d3.scale()` to delimit the output domain for the `.innerRadius()`.)~~
+31. ~~`Parent`/`child` var names in the JSON.~~ (Think I did it!)
 
 
 
