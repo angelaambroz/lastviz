@@ -91,7 +91,7 @@ form input {
 
 <body>
 
-<div id="tooltip" class="hidden" style="left: 600px, top: 400px">
+<div id="tooltip" class="tooltip hidden" style="left: 600px, top: 400px">
 	<div id="pic"><p><img src="unknown.png"></p></div>
 	<p><span id="genre">hip hop</span></p>
 	<p id="plays">50 plays</p>
@@ -99,7 +99,7 @@ form input {
 
 <div class="blurb">
 	<h3>A pretty way to visualize your listening habits</h3>
-	<p>Courtesy of the <a href="http://www.last.fm/api" target="_blank">last.fm API</a>.</p> 
+	<p>Courtesy of the <a href="http://www.last.fm/api" target="_blank">last.fm API</a>. Made by <a href="http://www.angelaambroz.com/" target="_blank">Angela Ambroz</a> in <a href="http://d3js.org/" target="_blank">d3.js</a>.</p> 
 	<p>Use your <a href="http://last.fm" target="_blank">last.fm</a> username. Or your friend's. Or the demo user, <em>rj</em>.</p>
 </div>
 
@@ -165,7 +165,7 @@ d3.select('input[type=button]').on('click', function() {
 
 		d3.select("#tooltip")
 			.style("left", "270px")
-			.style("top", "520px");
+			.style("top", "535px");
 
 		if (d.depth==1) {
 
@@ -228,7 +228,7 @@ d3.select('input[type=button]').on('click', function() {
 
   		if (d.depth==2) {
   			var parentColor = d3.hsl(color(d.parent.name.length - d.parent.name.charCodeAt(0)));
-  			parentColor.s -= 0.1;
+  			parentColor.s -= 0.12;
   			parentColor.l += 0.1;
   			return parentColor;
 
@@ -294,8 +294,11 @@ d3.select('input[type=button]').on('click', function() {
 					}; // if tags exist
 				}; //close for loop (adding tags to dataset)
 
+				totalPlays = 0;
+
 				dataset.forEach(function(d) {
 					d.playcount = +d.playcount;
+					totalPlays += d.playcount;
 				});
 
 
@@ -313,7 +316,6 @@ d3.select('input[type=button]').on('click', function() {
 			            return { "name": d.key, "children": 
 			              d.values
 			            }; 
-
 			         }) 
 			      };
 
@@ -336,13 +338,10 @@ d3.select('input[type=button]').on('click', function() {
 					.innerRadius(function(d) { 
 						//thick genres
 						if (d.depth==1) { 
-							console.log(d);
-							totalPlays += d.value;
-							console.log(totalPlays);
-							return Math.sqrt(d.y)-15; 
+							//totalPlays += d.value;
+							return Math.sqrt(d.y)-scale(totalPlays); 
 						} 
 						if (d.depth==2) { return Math.sqrt(d.y); }
-						/*ADD THE +scale(totalPlays)*/
 					})
 					.outerRadius(function(d) { return Math.sqrt(d.y+d.dy) });
 
