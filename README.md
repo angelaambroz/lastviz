@@ -15,7 +15,7 @@ lastviz
 6. ~~Second level (outer ring) tooltip on artists: medium pics.~~ 
 7. ~~Transitions between users.~~ ([Thinking with Joins](http://bost.ocks.org/mike/join/) remains mysterious, unknowable.)
 8. `Enter` keystroke = clicking on `Update`?
-9. `click` to bring out the second ring (of topArtists).
+9. ~~`click` to bring out the second ring (of topArtists).~~ (Not doing this.)
 10. ~~Drop-down form of how many results (10, 20, etc?). Or text box?~~ 
 11. ~~Colors?! COLORS!~~
 12. ~~`lowerCase` `tags`, remove hyphens and replace with spaces, etc.~~
@@ -35,7 +35,7 @@ lastviz
 26. Figure out why pics work in Chrome (+FF@work) but not Firefox@home.
 27. ~~Error message if user hasn't listened to anything in past 12 months.~~
 28. ~~Double-click to open last.fm URL on either the `topArtist` or `artistTag`.~~ 
-29. Permanent tooltip showing the total sum playcount for user (top left; same style as inner ring tooltip). 
+29. ~~Permanent tooltip showing the total sum playcount for user (top left; same style as inner ring tooltip).~~ (Not doing this.) 
 30. ~~Make the donut width a `function` of total playcount. (Use `d3.scale()` to delimit the output domain for the `.innerRadius()`.)~~
 31. ~~`Parent`/`child` var names in the JSON.~~ (Think I did it!)
 

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<html xmlns:xlink="http://www.w3.org/1999/xlink">
 
 	<head>
 			<meta charset="utf-8">
@@ -90,6 +89,7 @@ form input {
 
 </style>
 
+
 <body>
 
 <div id="tooltip" class="hidden" style="left: 600px, top: 400px">
@@ -124,6 +124,7 @@ var w = 600,
 	radius = Math.min(w, h) / 2, 
 	totalPlays = 0,
 	color = d3.scale.category20(),
+	comma = d3.format(","),
 	genreIcon;
 
 var scale = d3.scale.linear()
@@ -156,17 +157,24 @@ d3.select('input[type=button]').on('click', function() {
 
   var tags = 'http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&mbid=164f0d73-1234-4e2c-8743-d77bf2191051&api_key=07eef8055a0b408f70b1b3d5039bbaf5&format=json';
 
-  	var comma = d3.format(",");
+  	var arc = d3.svg.arc()
+		.startAngle(function(d) { return d.x; })
+		.endAngle(function(d) { return d.x + d.dx; })
+		.innerRadius(function(d) { 
+			if (d.depth==1) { 
+				return Math.sqrt(d.y)-scale(totalPlays); 
+			} 
+			if (d.depth==2) { return Math.sqrt(d.y); }
+		})
+		.outerRadius(function(d) { return Math.sqrt(d.y+d.dy) });
 
 	function mouseover(d) {
-
-		//console.log(d);
 
 		d3.select(this).style("stroke-width", "6px");
 
 		d3.select("#tooltip")
 			.style("left", "270px")
-			.style("top", "535px");
+			.style("top", "537px");
 
 		if (d.depth==1) {
 
@@ -176,7 +184,7 @@ d3.select('input[type=button]').on('click', function() {
 				sum += d.children[j].playcount;
 			};
 
-			genreIcon = d.children[0].image[3]['#text'];
+			genreIcon = d.children[0].image[4]['#text'];
 
 			d3.select("#genre")
 				.html('<strong>' + d.name + '</strong>');
@@ -248,6 +256,17 @@ d3.select('input[type=button]').on('click', function() {
   	
   	};
 
+	function arcTween(a) {
+		var i = d3.interpolate({x: a.x0, dx: a.dx0}, a); 
+		return function(t) {
+			var b = i(t);
+			a.x0 = b.x;
+			a.dx0 = b.dx;
+			return arc(b);
+		};
+	}
+
+
 	//First JSON call
 	d3.json(top, function(error, json) {
 
@@ -307,6 +326,7 @@ d3.select('input[type=button]').on('click', function() {
 					}; // if tags exist
 				}; //close for loop (adding tags to dataset)
 
+				//Resetting totalPlays for each user/dataset
 				totalPlays = 0;
 
 				dataset.forEach(function(d) {
@@ -333,6 +353,7 @@ d3.select('input[type=button]').on('click', function() {
 			      };
 
 
+
 				//VISUALIZATION
 
 
@@ -343,51 +364,31 @@ d3.select('input[type=button]').on('click', function() {
 						return d.playcount;
 					});
 
-				var arc = d3.svg.arc()
-					.startAngle(function(d) { return d.x; })
-					.endAngle(function(d) { return d.x + d.dx; })
-					.innerRadius(function(d) { 
-						//thick genres
-						if (d.depth==1) { 
-							//totalPlays += d.value;
-							return Math.sqrt(d.y)-scale(totalPlays); 
-						} 
-						if (d.depth==2) { return Math.sqrt(d.y); }
-					})
-					.outerRadius(function(d) { return Math.sqrt(d.y+d.dy) });
-
 
 				var path = svg.datum(dataset).selectAll("path")
 					.data(partition(dataset));
-			
-				path.exit().remove();
-
-				/*path.transition()
-					.duration(750)
-					.attrTween("d", arcTween);*/
 
 				path.enter()
 					.append("path")
 					.style("stroke-width", "1px")
 					.style("stroke", "white");
 
-
 				path.attr("display", function(d) { return d.depth ? null: "none"; })
 					.attr("d", arc)
 					.on("mouseover", mouseover)
 					.on("mouseout", mouseout)
 					.on("click", clicked)
-					.style("fill", fillcolor);
+					.style("fill", fillcolor)
+					.each(function(d) {
+						d.x0 = d.x;
+						d.dx0 = d.dx;
+					});
 
+				path.transition()
+					.duration(1500)
+					.attrTween("d", arcTween);
 
-				function arcTween(a, d) {
-					var i = d3.interpolate(this._current, a); //things break here
-					this._current = i(0);
-					return function(t) {
-						return arc(i(t));
-					};
-				}
-
+				path.exit().remove();
 
 
 			}); //queue.awaitAll() closer
@@ -397,5 +398,4 @@ d3.select('input[type=button]').on('click', function() {
 
 </script>
 </body>
-</html>
 </html>
