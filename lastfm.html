@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:xlink="http://www.w3.org/1999/xlink">
 
 	<head>
 			<meta charset="utf-8">
@@ -91,7 +92,7 @@ form input {
 
 <body>
 
-<div id="tooltip" class="tooltip hidden" style="left: 600px, top: 400px">
+<div id="tooltip" class="hidden" style="left: 600px, top: 400px">
 	<div id="pic"><p><img src="unknown.png"></p></div>
 	<p><span id="genre">hip hop</span></p>
 	<p id="plays">50 plays</p>
@@ -184,7 +185,7 @@ d3.select('input[type=button]').on('click', function() {
 				.html('<p><img src="' + genreIcon + '"></p>');
 
 			d3.select("#plays")
-				.text(function(d, i) {
+				.text(function(d) {
 					return comma(sum) + " plays";
 				});
 
@@ -218,6 +219,17 @@ d3.select('input[type=button]').on('click', function() {
 			.style("stroke-width", "1px");
 
 	}; //mouseout
+
+	function clicked(d) {
+
+		if (d.depth==2) {
+			window.open(d.url);
+		}
+
+		if (d.depth==1) {
+			window.open(d.children[0].tagurl);
+		}
+	};
 
 
 	function fillcolor(d) {
@@ -288,6 +300,7 @@ d3.select('input[type=button]').on('click', function() {
 							artistTag = arguments[1][i].toptags.tag[0].name.toLowerCase().split('-').join(' ');
 
 							dataset[j]["tag"] = artistTag;
+							dataset[j]["tagurl"] = arguments[1][i].toptags.tag[0].url;
 
 
 						}; //name check conditional if statement
@@ -330,8 +343,6 @@ d3.select('input[type=button]').on('click', function() {
 						return d.playcount;
 					});
 
-				console.log(totalPlays);
-
 				var arc = d3.svg.arc()
 					.startAngle(function(d) { return d.x; })
 					.endAngle(function(d) { return d.x + d.dx; })
@@ -365,8 +376,8 @@ d3.select('input[type=button]').on('click', function() {
 					.attr("d", arc)
 					.on("mouseover", mouseover)
 					.on("mouseout", mouseout)
+					.on("click", clicked)
 					.style("fill", fillcolor);
-
 
 
 				function arcTween(a, d) {
@@ -386,4 +397,5 @@ d3.select('input[type=button]').on('click', function() {
 
 </script>
 </body>
+</html>
 </html>
